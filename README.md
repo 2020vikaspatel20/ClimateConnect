@@ -1,124 +1,83 @@
-# 🌍 Clear View – Community-Powered Pollution Reporting Platform
+🌍 Climate Connect – Community-Based
+Pollution & Climate Reporting Platform
+A Minor Project submitted at Lakshmi Narain College of Technology Excellence
+(LNCTE)
+Guided by respected faculty under the Department of Computer Science and
+Engineering
 
-[![Demo Video](https://img.shields.io/badge/Watch-Demo%20Video-blue?style=for-the-badge)](https://drive.google.com/file/d/18UcGIUkUaIaakoNc-T00s3mGGEgI5bQ2/view?usp=sharing)
-[![Live Site](https://img.shields.io/badge/Visit-Deployed%20App-brightgreen?style=for-the-badge)](https://clearvieweco.netlify.app/)
 
-> Empowering communities to report, visualize, and act on environmental pollution – starting with India’s invisible informal industry emissions.
+🧩 Overview
+Climate Connect is a simple and user-friendly web application designed to help people report
+and visualize pollution or climate-related incidents in their area.
+It aims to increase awareness, transparency, and action by allowing the public to share data
+that can help communities and organizations understand real-time pollution levels.
 
----
 
-## 🧠 Problem
+🧠 Problem Statement
+Environmental pollution and climate changes often go unnoticed at the local level, especially
+when there is no public reporting system.
+Lack of real-time, geotagged data makes it difficult for authorities or NGOs to take early action.
 
-Unseen pollution from informal industries across India continues to contaminate local ecosystems and communities. There’s a lack of **real-time, geotagged data** to take timely action or raise awareness.
 
----
+💡 Our Solution: Climate Connect
+Climate Connect acts as a bridge between the community and environmental organizations.
+Users can:
+● Report pollution incidents with photos and location data.
+● View all reports on a live interactive map.
+● Get basic insights into pollution patterns in their region.
+This platform promotes community participation and helps track environmental issues at the
+ground level.
 
-## ✅ Our Solution: Clear View
 
-**Clear View** is a mobile-first, community-powered web app that allows users to **report environmental pollution incidents**. The platform **geotags and visualizes** pollution data on an interactive public map. It supports **AI-assisted classification**, **NGO collaboration**, and **biodiversity hotspot tracking**.
+⚡ Key Features
+● 📸 Report Pollution Easily: Upload a photo, short description, and your location.
+● 🗺️ Live Map: Shows all reports using an interactive map with markers.
+● 🧠 AI-Based Detection (Basic): Identifies possible pollution from images using a
+lightweight machine learning model.
+● 🔍 Filter and Search: Find reports by type or region.
+● 🔐 User Accounts: Simple sign-up and login for authenticated reporting.
+● 📊 Dashboard: Users can manage their own submitted reports.
 
----
 
-## ⚡ Key Features (Hackathon MVP – Built under 72 Hours)
 
-- 📸 **Simple Reporting Interface**: Submit pollution reports via a mobile-friendly form. Auto-captures geolocation. Supports image upload.
-- 🗺️ **Geotagged Hotspot Map**: Displays reports on a real-time, interactive Leaflet map.
-- 🧠 **Automatic Image Classification**: Uses TensorFlow MobileNet to detect pollution in submitted photos.
-- 🔍 **Filtering and Clustering**: Filter by pollution type, date range. Visual indicators for high-density zones.
-- 🔐 **User Authentication**: Basic login/signup with Firebase. NGOs can apply for verification.
-- 🧾 **Dashboards**: Personal dashboards for users, NGOs, and admins to track or manage reports.
-- 🐛 **Report Statuses**: Each report moves through `Pending → Approved/Rejected → Resolved`.
+🧰 Tech Stack Used
+Frontend:
+● React (for UI)
+● Vite (for fast development)
+● Tailwind CSS (for design)
+● Leaflet.js (for map integration)
+Backend & Database:
+● Firebase Authentication (for login/signup)
+● Cloud Firestore (to store user reports)
+● Firebase Hosting (for deployment)
 
----
 
-## 📱 Screenshots
+Machine Learning Integration:
+● TensorFlow.js with a lightweight model for image analysis.
 
-> 📂 _Located in the `/snips` folder_
 
-## 📱 Screenshots
 
-| Login | Register | Report |
-|-------|----------|--------|
-| ![Login](./snips/login.png) | ![Register](./snips/register.png) | ![Report](./snips/report.png) |
-
-| Map | User Dashboard | Admin Dashboard |
-|-----|----------------|-----------------|
-| ![Map](./snips/map.png) | ![User](./snips/user.png) | ![Admin](./snips/admin.png) |
-
-| NGO Dashboard | Leaderboard | Landing Page 1 |
-|---------------|-------------|----------------|
-| ![NGO](./snips/ngo.png) | ![Leaderboard](./snips/leaderboard.png) | ![Landing 1](./snips/land.png) |
-
-| Landing Page 2 |
-|----------------|
-| ![Landing 2](./snips/land2.png) |
-
----
-
-## 🎥 Demo Video
-
-📽️ [Watch the Demo](https://drive.google.com/file/d/18UcGIUkUaIaakoNc-T00s3mGGEgI5bQ2/view?usp=sharing)
-
----
-
-## 🚀 Live App
-
-🌐 [Visit the Deployed Site](https://clearvieweco.netlify.app/)
-
----
-
-## 🛠️ Tech Stack
-
-**Frontend:**
-
-- [React](https://react.dev/)
-- [Vite](https://vitejs.dev/)
-- [Tailwind CSS](https://tailwindcss.com/)
-- [Leaflet.js](https://leafletjs.com/) for maps
-
-**Backend / Infra:**
-
-- [Firebase Authentication](https://firebase.google.com/docs/auth)
-- [Cloud Firestore](https://firebase.google.com/products/firestore) for data storage
-- [Firebase Hosting](https://firebase.google.com/products/hosting)
-
-**ML Model Integration:**
-
-- [TensorFlow.js](https://www.tensorflow.org/js) with MobileNet for pollution image classification
-
----
-
-## 📦 How to Run Locally
-
-```bash
-# 1. Clone the repository
-git clone https://github.com/yourusername/ClearView.git
-cd clear-view
-
+🚀 How to Run the Project Locally
+# 1. Clone this repository
+git clone https://github.com/yourusername/climate-connect.git
+cd climate-connect
 # 2. Install dependencies
 npm install
-
-# 3. Add Firebase config
-# Replace the placeholders in /src/firebase.js with your Firebase credentials
-
-# 4. Run the development server
+# 3. Add Firebase configuration
+# Replace Firebase credentials in src/firebase.js
+# 4. Start the project
 npm run dev
----
-```
 
-## 🤝 Contributing (Coming soon)
 
----
 
-## 📜 License (Not yet licensed)
+📜 License
+This project is created purely for academic purposes and not for commercial use.
+🙏 Acknowledgement
+We would like to express our heartfelt gratitude to our guide and faculty of LNCTE, Bhopal,
+for their valuable support and guidance throughout the development of this project.
 
-This project is licensed under the [MIT License](LICENSE).
 
----
-
-## 🙏 Acknowledgements
-
-- This project was built during the Hackathon Hack Eclipse
-- Special thanks to Vighnesh for his mentoring
-
----
+💬 Author
+Developed by:
+Students of Lakshmi Narain College of Technology Excellence
+B.Tech (CSE) – Minor Project 2025
