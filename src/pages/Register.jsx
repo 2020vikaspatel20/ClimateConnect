@@ -36,23 +36,24 @@ const Register = () => {
       confirmPassword: ''
     };
 
-    if (!name) {
+    if (!name || name.trim() === '') {
       newErrors.name = 'Name is required';
       valid = false;
-    } else if (name.length < 2) {
+    } else if (name.trim().length < 2) {
       newErrors.name = 'Name must be at least 2 characters';
       valid = false;
     }
 
-    if (!email) {
+    const trimmedEmail = email ? email.trim() : '';
+    if (!trimmedEmail) {
       newErrors.email = 'Email is required';
       valid = false;
-    } else if (!/\S+@\S+\.\S+/.test(email)) {
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmedEmail)) {
       newErrors.email = 'Email is invalid';
       valid = false;
     }
 
-    if (!password) {
+    if (!password || password === '') {
       newErrors.password = 'Password is required';
       valid = false;
     } else if (password.length < 6) {
@@ -60,7 +61,7 @@ const Register = () => {
       valid = false;
     }
 
-    if (!confirmPassword) {
+    if (!confirmPassword || confirmPassword === '') {
       newErrors.confirmPassword = 'Please confirm your password';
       valid = false;
     } else if (confirmPassword !== password) {
@@ -68,34 +69,114 @@ const Register = () => {
       valid = false;
     }
 
+    // Update errors immediately
     setErrors(newErrors);
     return valid;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    e.stopPropagation();
     
-    if (validateForm()) {
-      setIsSubmitting(true);
-      try {
-        const userCredential = await createUserWithEmailAndPassword(auth, email, password);   
-        const user = userCredential.user;
-
-        await setDoc(doc(db, "users", user.uid), {
-          uid: user.uid,
-          name: name,
-          role: "user",
-          createdAt: new Date(),
-          points: 0,
-        });
-        navigate(`/user-dashboard/${user.uid}`);
-      } 
-      catch (error) {
-        console.error('Registration error:', error);
-      } 
-      finally {
-        setIsSubmitting(false);
+    // Clear previous errors
+    setErrors({
+      name: '',
+      email: '',
+      password: '',
+      confirmPassword: ''
+    });
+    
+    // Validate form
+    const isValid = validateForm();
+    
+    if (!isValid) {
+      return;
+    }
+    
+    setIsSubmitting(true);
+    
+    try {
+      console.log('Starting registration process...');
+      console.log('Auth object:', auth);
+      console.log('Email:', email.trim());
+      
+      // Trim email before using
+      const trimmedEmail = email.trim();
+      const trimmedName = name.trim();
+      
+      console.log('Calling createUserWithEmailAndPassword...');
+      
+      // Check if auth is properly initialized
+      if (!auth) {
+        throw new Error('Firebase Auth is not initialized. Please check Firebase configuration.');
       }
+      
+      // Create user with Firebase Auth with timeout
+      const registrationPromise = createUserWithEmailAndPassword(auth, trimmedEmail, password);
+      const timeoutPromise = new Promise((_, reject) => 
+        setTimeout(() => reject(new Error('Registration timeout. Please check your internet connection.')), 30000)
+      );
+      
+      const userCredential = await Promise.race([registrationPromise, timeoutPromise]);
+      console.log('User created successfully:', userCredential.user.uid);
+      
+      const user = userCredential.user;
+
+      console.log('Saving user data to Firestore...');
+      // Save user data to Firestore
+      await setDoc(doc(db, "users", user.uid), {
+        uid: user.uid,
+        name: trimmedName,
+        role: "user",
+        createdAt: new Date(),
+        points: 0,
+      });
+      console.log('User data saved to Firestore');
+      
+      console.log('Navigating to dashboard...');
+      // Navigate to dashboard
+      navigate(`/user-dashboard/${user.uid}`);
+    } 
+    catch (error) {
+      console.error('Registration error:', error);
+      console.error('Error code:', error.code);
+      console.error('Error message:', error.message);
+      console.error('Full error:', JSON.stringify(error, null, 2));
+      
+      // Handle different Firebase error codes
+      let errorMessage = 'Registration failed. Please try again.';
+      const newErrors = {
+        name: '',
+        email: '',
+        password: '',
+        confirmPassword: ''
+      };
+      
+      if (error.code === 'auth/email-already-in-use') {
+        errorMessage = 'This email is already registered. Please sign in instead.';
+        newErrors.email = errorMessage;
+      } else if (error.code === 'auth/invalid-email') {
+        errorMessage = 'Invalid email address. Please check your email.';
+        newErrors.email = errorMessage;
+      } else if (error.code === 'auth/weak-password') {
+        errorMessage = 'Password is too weak. Please choose a stronger password (at least 6 characters).';
+        newErrors.password = errorMessage;
+      } else if (error.code === 'auth/network-request-failed') {
+        errorMessage = 'Network error. Please check your internet connection.';
+        newErrors.email = errorMessage;
+      } else if (error.code === 'auth/operation-not-allowed') {
+        errorMessage = 'Email/password accounts are not enabled. Please contact support.';
+        newErrors.email = errorMessage;
+      } else {
+        errorMessage = error.message || 'Registration failed. Please try again.';
+        newErrors.email = errorMessage;
+      }
+      
+      setErrors(newErrors);
+      alert(errorMessage);
+    } 
+    finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -118,7 +199,11 @@ const Register = () => {
               <p className="modern-subtitle">Join Clear View and help make a difference</p>
             </div>
             <div className="p-6 md:p-8">
-              <form onSubmit={handleSubmit} className="space-y-5">
+              <form 
+                onSubmit={handleSubmit} 
+                className="space-y-5"
+                noValidate
+              >
                 {/* Name Field */}
                 <div className="space-y-1.5">
                   <label htmlFor="name" className="modern-label">

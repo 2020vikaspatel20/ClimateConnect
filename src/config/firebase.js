@@ -1,4 +1,4 @@
-import { initializeApp } from "firebase/app";
+import { initializeApp, getApps } from "firebase/app";
 import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
@@ -14,9 +14,20 @@ const firebaseConfig = {
   measurementId: "G-6JL7P69RL2"
 };
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
+// Initialize Firebase - prevent multiple initializations
+let app;
+const apps = getApps();
+if (apps.length === 0) {
+  app = initializeApp(firebaseConfig);
+} else {
+  app = apps[0];
+}
+
+// Initialize Auth with the app instance
 export const auth = getAuth(app);
 
+// Initialize Firestore with the app instance
 export const db = getFirestore(app);
+
+// Initialize Storage with the app instance
 export const storage = getStorage(app);
